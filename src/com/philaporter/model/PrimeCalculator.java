@@ -31,7 +31,7 @@ public class PrimeCalculator {
 
     public static ConcurrentHashMap<Integer, Boolean> evaluateAllConcurrently(List<Integer> list) {
         ConcurrentHashMap<Integer, Boolean> map = new ConcurrentHashMap<>();
-        list.stream().forEach((num)->
+        list.parallelStream().forEach((num)->
                 map.put(num, PrimeCalculator.isPrime(num))
         );
         return map;
