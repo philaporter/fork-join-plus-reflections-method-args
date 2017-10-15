@@ -10,7 +10,7 @@ public class RecursivePrimeCalculator extends RecursiveTask {
 
     private int threshold = 10_000;
     private List<Integer> list;
-    private ConcurrentHashMap<Integer, Boolean> map = new ConcurrentHashMap<>();
+    private static ConcurrentHashMap<Integer, Boolean> map = new ConcurrentHashMap<>();
 
     public RecursivePrimeCalculator(List<Integer> list) {
         this.list = list;
