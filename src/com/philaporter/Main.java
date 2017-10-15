@@ -28,6 +28,12 @@ public class Main {
                 new PrimeCalculator(),
                 PrimeCalculator.class.getMethod("evaluateAll", List.class), list);
 
+        // Parallel stream
+        Map<Integer, Boolean> map2 =
+                (Map<Integer, Boolean>) CustomTimer.determineDuration(
+                        new PrimeCalculator(),
+                        PrimeCalculator.class.getMethod("evaluateAllConcurrentStream", List.class), list);
+
         // "Divide and Conquer" thread strategy
         RecursivePrimeCalculator rpc = new RecursivePrimeCalculator(list);
         ConcurrentHashMap<Integer, Boolean> concurrentHashMap =

@@ -8,9 +8,9 @@ import java.util.concurrent.RecursiveTask;
 
 public class RecursivePrimeCalculator extends RecursiveTask {
 
-    private int threshold = 100_000;
+    private int threshold = 10_000;
     private List<Integer> list;
-    private static ConcurrentHashMap<Integer, Boolean> map = new ConcurrentHashMap<>();
+    private ConcurrentHashMap<Integer, Boolean> map = new ConcurrentHashMap<>();
 
     public RecursivePrimeCalculator(List<Integer> list) {
         this.list = list;
@@ -19,19 +19,20 @@ public class RecursivePrimeCalculator extends RecursiveTask {
     @Override
     protected ConcurrentHashMap<Integer, Boolean> compute() {
 
-        if(list.size() > threshold){
+        int size = list.size();
+        if(size > threshold){
 
             // Divide up the work
-            RecursivePrimeCalculator firstHalf = new RecursivePrimeCalculator(list.subList(0, list.size() / 2));
+            RecursivePrimeCalculator firstHalf = new RecursivePrimeCalculator(list.subList(0, size / 2));
             firstHalf.fork();
-            RecursivePrimeCalculator secondHalf = new RecursivePrimeCalculator(list.subList(list.size() / 2, list.size()));
+            RecursivePrimeCalculator secondHalf = new RecursivePrimeCalculator(list.subList(size / 2, size));
             map.putAll(secondHalf.compute());
             map.putAll((Map<? extends Integer, ? extends Boolean>) firstHalf.join());
             return map;
         }
         else
         {
-            return PrimeCalculator.evaluateAllConcurrently(list);
+            return PrimeCalculator.evaluateAllRecursiveTask(list);
         }
     }
 }
